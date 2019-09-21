@@ -22,18 +22,29 @@ public class App implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         scanner = new Scanner(System.in);
-//        System.out.print("Enter a file name: ");
 
         String input = scanner.nextLine();
         String[] split = input.split(" ");
-        String fileName=split[0];
-        int balance=Integer.parseInt(split[1]);
+        String command = split[0];
+        String fileName = split[1];
+        int balance = 0;
+        try {
+            balance = Integer.parseInt(split[2]);
+        } catch (Exception e) {
+            if (!command.equals("cat")) {
+                System.out.println("Missing balance!");
+                return;
+            }
+        }
 
         List<Item> itemList = getItemsFromFile(fileName);
 
-        printItems(itemList);
-
-        List<Item> pairOfGifts = getPairOfGifts(itemList, balance);
-        printGiftsResult(pairOfGifts);
+        if (command.equals("cat")) {
+           printItems(itemList);
+        }
+        if (command.equals("find-pair")) {
+            List<Item> pairOfGifts = getPairOfGifts(itemList, balance);
+            printGiftsResult(pairOfGifts);
+        }
     }
 }
